@@ -56,6 +56,7 @@ public class SLL {
       System.out.println(buffer.data);
       buffer = buffer.next;
     }
+
     System.out.println("size: " + this.size);
   }
 }
