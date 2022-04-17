@@ -12,6 +12,12 @@ public class Graph {
     this.size = size;
   }
 
+  private void resetVisitedState() {
+    for (int i = 0; i < visited.length; i++) {
+      visited[i] = false;
+    }
+  }
+
   public AdjacencyList searchVertex(int key) {
     for (AdjacencyList v : vertices) {
       if (v == null)
@@ -71,6 +77,8 @@ public class Graph {
     AdjacencyList.Vertex buffer = this.vertices[0].getHead();
     int indexBuffer = buffer.index;
 
+    resetVisitedState();
+
     do {
       while (buffer != null) {
         if (!visited[indexBuffer]) {
@@ -91,6 +99,43 @@ public class Graph {
         buffer = bfsQueue.dequeue().getHead();
 
     } while (buffer != null);
+
+    System.out.println();
+  }
+
+  public void dfs(int start) {
+    DFSStack dfsStack = new DFSStack();
+
+    AdjacencyList startVertex = searchVertex(start);
+    if (startVertex == null)
+      return;
+
+    System.out.print("DFS: ");
+
+    AdjacencyList.Vertex buffer = this.vertices[0].getHead();
+    int indexBuffer = buffer.index;
+
+    resetVisitedState();
+
+    do {
+      while (buffer != null) {
+        if (!visited[indexBuffer]) {
+          System.out.print(buffer.data + ",");
+          dfsStack.push(buffer);
+          visited[indexBuffer] = true;
+          buffer = searchVertex(buffer.data).getHead();
+          indexBuffer = buffer.index;
+        } else {
+          buffer = buffer.next;
+          if (buffer != null) {
+            indexBuffer = buffer.index;
+          }
+        }
+      }
+      buffer = dfsStack.pop();
+    } while (!dfsStack.isEmpty());
+
+    System.out.println();
   }
 
   public void printAdjacencyList() {
