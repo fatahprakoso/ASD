@@ -1,9 +1,9 @@
-public class LinkedQueue {
+class BFSQueue {
   class Node {
     Node next;
-    String data;
+    AdjacencyList data;
 
-    Node(String data, Node next) {
+    Node(AdjacencyList data, Node next) {
       this.data = data;
       this.next = next;
     }
@@ -20,7 +20,7 @@ public class LinkedQueue {
     return size;
   }
 
-  public void enqueue(String data) {
+  public void enqueue(AdjacencyList data) {
     Node newNode = new Node(data, null);
 
     if (size == 0) {
@@ -37,27 +37,31 @@ public class LinkedQueue {
     size++;
   }
 
-  public String dequeue() {
+  public AdjacencyList dequeue() {
     if (isEmpty()) {
-      System.out.println("Queue Kosong!");
       return null;
     }
 
-    String hasil = this.head.data;
+    AdjacencyList hasil = this.head.data;
     this.head = this.head.next;
 
     size--;
     return hasil;
   }
 
-  public void printSLL() {
+  public int peak() {
+    if (isEmpty()) {
+      return Integer.MIN_VALUE;
+    }
+
+    return this.head.data.getHead().data;
+  }
+
+  public void printqueue() {
     Node buffer = this.head;
     for (int i = 0; i < this.size; i++) {
       System.out.print(buffer.data + ",");
       buffer = buffer.next;
     }
-
-    System.out.println("\nsize: " + this.size);
-    System.out.println();
   }
 }

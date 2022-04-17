@@ -1,13 +1,4 @@
 public class CLL {
-  public static void main(String[] args) {
-    CLL cll = new CLL();
-    cll.addLast("1");
-    cll.addLast("2");
-    cll.addLast("3");
-
-    cll.printSLL();
-  }
-
   class Node {
     Node next;
     String data;

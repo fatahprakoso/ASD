@@ -1,18 +1,4 @@
-class Main {
-  public static void main(String[] args) {
-    DLL dll = new DLL();
-    dll.insertFirst(5);
-    dll.insertFirst(4);
-    dll.insertFirst(3);
-    dll.insertFirst(2);
-    dll.insertFirst(1);
-    dll.insertFirst(0);
-
-    dll.print();
-  }
-}
-
-class DLL {
+public class DLL {
   class Node {
     // pointernya ada 2, yaitu next dan prev
     Node next, prev;
