@@ -47,7 +47,7 @@ class AdjacencyList {
 
   public Vertex search(int key) {
     Vertex buffer = this.head;
-    for (int i = 0; i < this.size - 1; i++) {
+    for (int i = 0; i < this.size; i++) {
       if (buffer.data == key)
         return buffer;
       else
