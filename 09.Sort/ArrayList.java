@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class ArrayList {
   // digunakan untuk menyimpan data
   private int[] data;
@@ -12,9 +10,6 @@ public class ArrayList {
 
   // digunakan untuk menyimpan ukuran array yang nantinya akan selalu diupdate
   private int size;
-
-  int swapCount;
-  int loopCount;
 
   // constructor
   public ArrayList(int size) {
@@ -39,7 +34,7 @@ public class ArrayList {
     return this.count;
   }
 
-  public boolean isFull() {
+  private boolean isFull() {
     return this.size == this.count;
   }
   // ===========================================================================
@@ -79,119 +74,6 @@ public class ArrayList {
     return result;
   }
 
-  // melakukan pertukaran data pada 2 indeks array
-  private void swap(int[] arr, int index1, int index2) {
-    int buffer = arr[index1];
-    arr[index1] = arr[index2];
-    arr[index2] = buffer;
-    swapCount++;
-  }
-
-  public int[] bubbleSort() {
-    swapCount = 0;
-    loopCount = 0;
-    int[] result = copyArray(this.data);
-    boolean sorted = false;
-    int unsortedRange = this.count;
-
-    do {
-      sorted = true;
-      for (int i = 1; i < unsortedRange; i++) {
-        loopCount++;
-        if (result[i - 1] > result[i]) {
-          swap(result, i - 1, i);
-          sorted = false;
-        }
-      }
-      unsortedRange--;
-    } while (!sorted);
-
-    printSorted(result, "Bubble Sort");
-    return result;
-  }
-
-  public int[] shellSort(int k, int decrement) {
-    swapCount = 0;
-    loopCount = 0;
-    int[] result = copyArray(this.data);
-    boolean sorted = false;
-
-    do {
-      sorted = true;
-      for (int i = k; i < this.count; i++) {
-        loopCount++;
-        if (result[i - k] > result[i]) {
-          swap(result, i - k, i);
-          sorted = false;
-        }
-      }
-
-      if (k - decrement > 1) {
-        k -= decrement;
-        sorted = false;
-      } else {
-        if (k > 1)
-          sorted = false;
-        k = 1;
-      }
-    } while (!sorted);
-
-    printSorted(result, "Shell Sort");
-    return result;
-  }
-
-  public int[] selectionSort() {
-    swapCount = 0;
-    loopCount = 0;
-    int[] result = copyArray(this.data);
-    int sortingRange = this.count;
-
-    while (sortingRange != 1) {
-      int max = Integer.MIN_VALUE;
-      int index = -1;
-      for (int i = 0; i < sortingRange; i++) {
-        loopCount++;
-        if (max < result[i]) {
-          max = result[i];
-          index = i;
-        }
-      }
-
-      if (index != -1) {
-        swap(result, index, sortingRange - 1);
-      }
-
-      sortingRange--;
-    }
-
-    printSorted(result, "Selection Sort");
-    return result;
-  }
-
-  public int[] insertionSort() {
-    swapCount = 0;
-    loopCount = 0;
-    int[] result = copyArray(this.data);
-    int pivotIndex = 0;
-
-    while (pivotIndex != this.count - 1) {
-      loopCount++;
-      if (result[pivotIndex] > result[pivotIndex + 1]) {
-        loopCount--;
-        for (int i = pivotIndex; i >= 0; i--) {
-          loopCount++;
-          if (result[i] < result[i + 1])
-            break;
-          swap(result, i, i + 1);
-        }
-      }
-      pivotIndex++;
-    }
-
-    printSorted(result, "Insertion Sort");
-    return result;
-  }
-
   // print data pada array data
   public void print() {
     System.out.println("Array:");
@@ -212,25 +94,108 @@ public class ArrayList {
     System.out.println();
   }
 
-  public static void main(String[] args) {
-    ArrayList list = new ArrayList(3);
-    list.insert(3, 1, 6, 4, 9, 5, 8, 10, 53, 11, 76);
-    list.print();
-    System.out.println();
-    list.bubbleSort();
-    System.out.println("swap: " + list.swapCount);
-    System.out.println("loop: " + list.loopCount);
-    System.out.println();
-    list.shellSort(10, 2);
-    System.out.println("swap: " + list.swapCount);
-    System.out.println("loop: " + list.loopCount);
-    System.out.println();
-    list.selectionSort();
-    System.out.println("swap: " + list.swapCount);
-    System.out.println("loop: " + list.loopCount);
-    System.out.println();
-    list.insertionSort();
-    System.out.println("swap: " + list.swapCount);
-    System.out.println("loop: " + list.loopCount);
+  private void swap(int[] arr, int indeks1, int indeks2) {
+    int buffer = arr[indeks1];
+    arr[indeks1] = arr[indeks2];
+    arr[indeks2] = buffer;
   }
+
+  public void bubbleSort() {
+    int[] result = copyArray(this.data);
+    boolean sorted = false;
+
+    do {
+      sorted = true;
+      for (int i = 1; i < result.length; i++) {
+        if (result[i - 1] > result[i]) {
+          swap(result, i - 1, i);
+          sorted = false;
+        }
+      }
+    } while (!sorted);
+
+    printSorted(result, "Bubble Sort");
+  }
+
+  public void shellSort(int k, int d) {
+    int[] result = copyArray(this.data);
+    boolean sorted = false;
+
+    do {
+      sorted = true;
+      for (int i = 1; i < result.length; i += k) {
+        if (result[i - 1] > result[i]) {
+          swap(result, i - 1, i);
+          sorted = false;
+        }
+      }
+
+      if (k - d > 1) {
+        sorted = false;
+        k -= d;
+      } else {
+        if (k > 1)
+          sorted = false;
+        k = 1;
+      }
+    } while (!sorted);
+
+    printSorted(result, "Shell Sort");
+  }
+
+  // public void selectionSort() {
+  // int[] result = copyArray(this.data);
+  // int pivotIndex = 1;
+
+  // while (pivotIndex < result.length) {
+  // if (result[pivotIndex] < result[pivotIndex - 1]) {
+  // swap(result, pivotIndex, pivotIndex - 1);
+  // }
+  // pivotIndex++;
+  // }
+
+  // printSorted(result, "Selection Sort");
+  // }
+
+  public int[] selectionSort() {
+    int[] result = copyArray(this.data);
+    int sortingRange = this.count;
+
+    while (sortingRange != 1) {
+      int max = Integer.MIN_VALUE;
+      int index = -1;
+      for (int i = 0; i < sortingRange; i++) {
+        if (max < result[i]) {
+          max = result[i];
+          index = i;
+        }
+      }
+
+      if (index != -1) {
+        swap(result, index, sortingRange - 1);
+      }
+
+      sortingRange--;
+    }
+
+    printSorted(result, "Selection Sort");
+    return result;
+  }
+
+  // insertion sort, heap sort
+
+
+  public static void main(String[] args) {
+    ArrayList list = new ArrayList(2);
+    list.insert(25, 27, 10, 8, 76, 21);
+    list.print();
+    list.bubbleSort();
+    list.shellSort(4, 2);
+    list.selectionSort();
+
+    HeapTree heapList = new HeapTree(25, 27, 10, 8, 76, 21);
+    System.out.println("Sorted Array (Heap Sort):");
+    heapList.sort();
+  }
+
 }
