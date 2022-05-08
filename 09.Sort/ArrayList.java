@@ -123,9 +123,9 @@ public class ArrayList {
 
     do {
       sorted = true;
-      for (int i = 1; i < result.length; i += k) {
-        if (result[i - 1] > result[i]) {
-          swap(result, i - 1, i);
+      for (int i = k; i < result.length; i++) {
+        if (result[i - k] > result[i]) {
+          swap(result, i - k, i);
           sorted = false;
         }
       }
