@@ -143,20 +143,6 @@ public class ArrayList {
     printSorted(result, "Shell Sort");
   }
 
-  // public void selectionSort() {
-  // int[] result = copyArray(this.data);
-  // int pivotIndex = 1;
-
-  // while (pivotIndex < result.length) {
-  // if (result[pivotIndex] < result[pivotIndex - 1]) {
-  // swap(result, pivotIndex, pivotIndex - 1);
-  // }
-  // pivotIndex++;
-  // }
-
-  // printSorted(result, "Selection Sort");
-  // }
-
   public int[] selectionSort() {
     int[] result = copyArray(this.data);
     int sortingRange = this.count;
@@ -183,7 +169,27 @@ public class ArrayList {
   }
 
   // insertion sort, heap sort
+  public int[] insertionSort() {
+    int[] result = copyArray(this.data);
+    int pivotIndex = 0;
 
+    while (pivotIndex != this.count - 1) {
+      if (result[pivotIndex] > result[pivotIndex + 1]) {
+        for (int i = pivotIndex; i >= 0; i--) {
+          if (result[i] < result[i + 1]) {
+            break;
+          }
+
+          swap(result, i, i + 1);
+        }
+      }
+
+      pivotIndex++;
+    }
+
+    printSorted(result, "Insertion Sort");
+    return result;
+  }
 
   public static void main(String[] args) {
     ArrayList list = new ArrayList(2);
@@ -192,6 +198,7 @@ public class ArrayList {
     list.bubbleSort();
     list.shellSort(4, 2);
     list.selectionSort();
+    list.insertionSort();
 
     HeapTree heapList = new HeapTree(25, 27, 10, 8, 76, 21);
     System.out.println("Sorted Array (Heap Sort):");

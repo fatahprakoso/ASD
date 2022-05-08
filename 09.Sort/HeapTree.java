@@ -2,6 +2,9 @@ public class HeapTree {
   // Digunakan untuk menyimpan data
   private int[] heap;
 
+  // heap -> ukurannya 7: [0,0,0,0,0,0,0].replace(0, Integer.MIN_VALUE)
+  // [4,9,9,0,0]
+  // ^
   private int dataSize;
 
   // Digunakan untuk meresize array heap
@@ -31,7 +34,8 @@ public class HeapTree {
   }
 
   private void resizeHeapArray() {
-    int[] resize = new int[this.heap.length + (int) Math.pow(2, ++nodeIncrementPower)];
+    int[] resize = new int[this.heap.length + (int) Math.pow(2,
+        ++nodeIncrementPower)];
     for (int i = 0; i < resize.length; i++) {
       if (i < this.heap.length) {
         resize[i] = this.heap[i];
