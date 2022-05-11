@@ -11,6 +11,8 @@ public class ArrayList {
   // digunakan untuk menyimpan ukuran array yang nantinya akan selalu diupdate
   private int size;
 
+  private int swap;
+
   // constructor
   public ArrayList(int size) {
     this.data = new int[size];
@@ -91,13 +93,14 @@ public class ArrayList {
     for (int i : arr) {
       System.out.print(i + ",");
     }
-    System.out.println();
+    System.out.println("\nswap: " + swap);
   }
 
   private void swap(int[] arr, int indeks1, int indeks2) {
     int buffer = arr[indeks1];
     arr[indeks1] = arr[indeks2];
     arr[indeks2] = buffer;
+    swap++;
   }
 
   public void bubbleSort() {
@@ -193,16 +196,22 @@ public class ArrayList {
 
   public static void main(String[] args) {
     ArrayList list = new ArrayList(2);
-    list.insert(25, 27, 10, 8, 76, 21);
-    list.print();
-    list.bubbleSort();
-    list.shellSort(4, 2);
-    list.selectionSort();
-    list.insertionSort();
+    list.insert(4, 1, 2, 3, 8, 5, 7, 6);
+    // 4, 1, 2, 3, 6, 5, 7, 8
+    // 1, 4, 2, 3, 6, 5, 7, 8
+    // 1, 2, 4, 3, 6, 5, 7, 8
+    // 1, 2, 3, 4, 6, 5, 7, 8
+    // 1, 2, 3, 4, 5, 6, 7, 8
 
-    HeapTree heapList = new HeapTree(25, 27, 10, 8, 76, 21);
-    System.out.println("Sorted Array (Heap Sort):");
-    heapList.sort();
+    // list.print();
+    // list.bubbleSort();
+    list.shellSort(5, 1);
+    // list.selectionSort();
+    // list.insertionSort();
+
+    // HeapTree heapList = new HeapTree(25, 27, 10, 8, 76, 21);
+    // System.out.println("Sorted Array (Heap Sort):");
+    // heapList.sort();
   }
 
 }
