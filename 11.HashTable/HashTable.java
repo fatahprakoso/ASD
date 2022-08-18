@@ -1,46 +1,52 @@
 public class HashTable {
-  private Node[] data;
-  private int size;
-  private int hSize;
+  private PairValue[] hashArray;
+  private int hSize; // ukuran hashArray
+  private int dataSize; // jumlah data yang tersimpan di hashArray
 
-  public HashTable(int size) {
-    data = new Node[size];
-    hSize = size;
+  public HashTable(int hSize) {
+    hashArray = new PairValue[hSize];
+    this.hSize = hSize;
   }
 
-  private class Node {
+  class PairValue {
     String key;
-    Mahasiswa data;
+    Mahasiswa m;
 
-    Node(String key, Mahasiswa data) {
+    public PairValue(String key, Mahasiswa m) {
       this.key = key;
-      this.data = data;
+      this.m = m;
     }
   }
 
-  private int hashFunc(String key) {
+  private int hashFun(String key) {
     int count = 0;
     for (int i = 0; i < key.length(); i++) {
+      // tif
+      // 116 + 105 + 102 = 323
       count += (int) key.charAt(i);
     }
+
+    // hSize = 100
+    // count % hSize = 323 % 100 = 23
     return count % hSize;
   }
 
-  public boolean insert(String key, Mahasiswa data) {
-
-    if (this.size == this.hSize)
+  public boolean insert(String key, Mahasiswa m) {
+    if (hSize == dataSize) {
       return false;
+    }
 
-    int index = hashFunc(key);
-    Node newNode = new Node(key, data);
-    for (int i = 0; i < this.data.length; i++) {
-      if (this.data[index] == null || this.data[index].key == null) {
-        this.data[index] = newNode;
-        this.size++;
+    int index = hashFun(key);
+    PairValue newPair = new PairValue(key, m);
+
+    for (int i = 0; i < this.hSize; i++) {
+      if (this.hashArray[index] == null || this.hashArray[index].key == null) {
+        this.hashArray[index] = newPair;
+        this.dataSize++;
         return true;
       }
 
-      if (index == this.data.length - 1)
+      if (index == this.hSize - 1)
         index = 0;
       index++;
     }
@@ -50,21 +56,22 @@ public class HashTable {
 
   public boolean delete(String key) {
 
-    if (this.size == 0)
+    if (this.hSize == 0)
       return false;
 
-    int index = hashFunc(key);
-    for (int i = 0; i < this.data.length; i++) {
-      if (this.data[index] == null)
+    int index = hashFun(key);
+
+    for (int i = 0; i < this.hashArray.length; i++) {
+      if (this.hashArray[index] == null)
         return false;
 
-      if (this.data[index].key != null && this.data[index].key.equals(key)) {
-        this.data[index].key = null;
-        this.size--;
+      if (this.hashArray[index].key != null && this.hashArray[index].key.equals(key)) {
+        this.hashArray[index].key = null;
+        this.dataSize--;
         return true;
       }
 
-      if (index == this.data.length - 1)
+      if (index == this.hashArray.length - 1)
         index = 0;
       index++;
     }
@@ -72,72 +79,67 @@ public class HashTable {
   }
 
   public Mahasiswa get(String key) {
-
-    if (this.size == 0)
+    if (this.dataSize == 0)
       return null;
 
-    int index = hashFunc(key);
-    for (int i = 0; i < this.data.length; i++) {
-      if (this.data[index] == null)
+    int index = hashFun(key);
+    for (int i = 0; i < this.hSize; i++) {
+      if (this.hashArray[index] == null)
         return null;
 
-      if (this.data[index].key != null && this.data[index].key.equals(key)) {
-        this.data[index].key = null;
-        return this.data[index].data;
+      if (this.hashArray[index].key != null && this.hashArray[index].key.equals(key)) {
+        return this.hashArray[index].m;
       }
 
-      if (index == this.data.length - 1)
+      if (index == this.hSize - 1)
         index = 0;
       index++;
     }
     return null;
+
   }
 
   public void print() {
-    for (int i = 0; i < data.length; i++) {
-      if (data[i] == null || data[i].key == null) {
+    for (int i = 0; i < hashArray.length; i++) {
+      if (hashArray[i] == null || hashArray[i].key == null) {
         System.out.println("null");
         continue;
       }
-      System.out.printf("%s : %s (%f) -> %s\n", data[i].key, data[i].data.nama, data[i].data.ipk, data[i].data.nim);
+      System.out.printf("%s : %s -> %s\n", hashArray[i].key, hashArray[i].m.nama, hashArray[i].m.nim);
     }
   }
 
   public static void main(String[] args) {
-    Mahasiswa m1 = new Mahasiswa("2053451234", "Yayan", 3.5);
-    Mahasiswa m2 = new Mahasiswa("2053453454", "Denny", 2.5);
-    Mahasiswa m3 = new Mahasiswa("2053455671", "Dian", 3.9);
-    Mahasiswa m4 = new Mahasiswa("9832746863", "Desta", 3.0);
-    HashTable hTable = new HashTable(5);
-    hTable.insert("mahasiswa kupu-kupu", m1);
-    hTable.insert("mahasiswa kura-kura", m2);
-    hTable.insert("mahasiswa kunang-kunang", m3);
-    hTable.insert("mahasiswa biasaaa", m4);
+    Mahasiswa m1 = new Mahasiswa("32483485", "Andi");
+    Mahasiswa m2 = new Mahasiswa("90367903", "Budi");
+    Mahasiswa m3 = new Mahasiswa("09740465", "Ali");
+    HashTable hTable = new HashTable(4);
+
+    // insert
+    hTable.insert("Mahasiswa kupu-kupu", m1);
+    hTable.insert("Mahasiswa organsisasi!!", m2);
+    hTable.insert("Mahasiswa biasaa!", m3);
     hTable.print();
-    hTable.delete("mahasiswa kura-kura");
-    hTable.delete("mahasiswa biasaaa");
-    hTable.delete("mahasiswa biasaaa");
+
+    // delete
+    hTable.delete("Mahasiswa biasaa!");
     System.out.println();
     hTable.print();
-    hTable.insert("mahasiswa kura-kura", m2);
-    hTable.insert("mahasiswa biasaaa", m4);
+
+    // get
     System.out.println();
-    hTable.print();
-    System.out.println(hTable.get("mahasiswa kupu-kupu").nama);
-    System.out.println(hTable.get("mahasiswa kura-kura").nama);
-    System.out.println(hTable.get("mahasiswa kunang-kunang").nama);
-    System.out.println(hTable.get("mahasiswa biasaaa").nama);
+    System.out.println(hTable.get("Mahasiswa kupu-kupu").nama);
+    System.out.println(hTable.get("Mahasiswa kupu"));
+    System.out.println(hTable.get("Mahasiswa organsisasi!!").nama);
   }
 }
 
 class Mahasiswa {
   String nim;
   String nama;
-  double ipk;
 
-  public Mahasiswa(String nim, String nama, double ipk) {
+  Mahasiswa(String nim, String nama) {
     this.nim = nim;
     this.nama = nama;
-    this.ipk = ipk;
   }
 }
